@@ -1,4 +1,8 @@
+~/lumiere/api/analyze.js
 
+export const config = {
+  maxDuration: 60
+};
 import { useState, useRef, useCallback, useEffect } from "react";
 
 // ─── AFFILIATE PRODUCTS ───────────────────────────────────────────────────────
@@ -256,12 +260,6 @@ function roundRect(ctx, x, y, w, h, r) {
   ctx.beginPath();
   ctx.moveTo(x + r, y);
   ctx.lineTo(x + w - r, y);
-  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-  ctx.lineTo(x + w, y + h - r);
-  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-  ctx.lineTo(x + r, y + h);
-  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-  ctx.lineTo(x, y + r);
   ctx.quadraticCurveTo(x, y, x + r, y);
   ctx.closePath();
 }
@@ -324,7 +322,6 @@ function ShareModal({ analysis, userImage, onClose }) {
           </p>
         </div>
 
-        {/* Canvas preview — scaled down for display */}
         <div style={{
           borderRadius: 12, overflow: "hidden", marginBottom: 20,
           border: "1px solid rgba(201,169,110,0.15)",
@@ -340,9 +337,7 @@ function ShareModal({ analysis, userImage, onClose }) {
           </div>
         )}
 
-        {/* Action Buttons */}
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          {/* Download */}
           <button onClick={download} disabled={!rendered} style={{
             background: rendered ? "linear-gradient(135deg, #c9a96e, #a0783e)" : "rgba(255,255,255,0.05)",
             border: "none", borderRadius: 8, padding: "14px",
@@ -354,7 +349,6 @@ function ShareModal({ analysis, userImage, onClose }) {
             <span>⬇</span> DOWNLOAD FOR INSTAGRAM STORIES
           </button>
 
-          {/* Share row */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
             <a href={`https://twitter.com/intent/tweet?text=My+skin+score+is+${analysis?.score}%2F100+✦+Get+yours+at+lumiere-skin.com`}
               target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
@@ -374,7 +368,6 @@ function ShareModal({ analysis, userImage, onClose }) {
           </div>
         </div>
 
-        {/* Instagram instructions */}
         <div style={{
           marginTop: 20, background: "rgba(201,169,110,0.04)", border: "1px solid rgba(201,169,110,0.12)",
           borderRadius: 10, padding: "16px 18px"
@@ -399,7 +392,7 @@ function PaywallModal({ onClose, onUnlock }) {
         <div style={{ textAlign: "center", marginBottom: 32 }}>
           <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: "0.3em", color: "#c9a96e", marginBottom: 10 }}>UNLOCK FULL ANALYSIS</div>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 32, fontWeight: 300, margin: "0 0 10px" }}>Your skin deserves the full picture</h2>
-          <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "#5a5550", margin: 0 }}>Complete routine · Ingredient guide · Product picks · Unlimited scans</p>
+          <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "#5a5550", margin: 0 }}>Complete routine · Ingredient guide · Product recommendations · Unlimited scans</p>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 28 }}>
           {PLANS.map(plan => (
@@ -569,7 +562,6 @@ export default function SkincareAnalyzer() {
       {showShare && <ShareModal analysis={analysis} userImage={image} onClose={() => setShowShare(false)} />}
       {showPaywall && <PaywallModal onClose={() => setShowPaywall(false)} onUnlock={(plan) => { setIsPro(true); setShowPaywall(false); }} />}
 
-      {/* Header */}
       <div style={{ borderBottom: "1px solid rgba(201,169,110,0.2)", padding: "20px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(201,169,110,0.03)" }}>
         <div>
           <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 300, color: "#c9a96e", letterSpacing: "0.05em" }}>LUMIÈRE</div>
@@ -586,7 +578,6 @@ export default function SkincareAnalyzer() {
 
       <div style={{ maxWidth: 920, margin: "0 auto", padding: "40px 24px" }}>
 
-        {/* Hero */}
         {!analysis && (
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(34px, 6vw, 60px)", fontWeight: 300, lineHeight: 1.1, marginBottom: 14 }}>
@@ -598,7 +589,6 @@ export default function SkincareAnalyzer() {
           </div>
         )}
 
-        {/* Upload */}
         <div style={{ display: "grid", gridTemplateColumns: image ? "1fr 1fr" : "1fr", gap: 20, marginBottom: 24 }}>
           <div className="upload-zone" onClick={() => fileInputRef.current?.click()}
             onDrop={handleDrop} onDragOver={(e) => { e.preventDefault(); setDragOver(true); }} onDragLeave={() => setDragOver(false)}
@@ -626,11 +616,8 @@ export default function SkincareAnalyzer() {
 
         {error && <div style={{ textAlign: "center", color: "#ff6b6b", fontFamily: "'DM Mono', monospace", fontSize: 11, marginBottom: 20 }}>{error}</div>}
 
-        {/* ── RESULTS ── */}
         {analysis && (
           <div className="fade-in">
-
-            {/* ✦ SHARE CARD — prominent placement right at top of results */}
             <div style={{
               background: "linear-gradient(135deg, rgba(131,58,180,0.12), rgba(253,29,29,0.08), rgba(252,176,69,0.08))",
               border: "1px solid rgba(252,176,69,0.25)",
@@ -658,7 +645,6 @@ export default function SkincareAnalyzer() {
               </button>
             </div>
 
-            {/* Score + Profile */}
             <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 24, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(201,169,110,0.15)", borderRadius: 16, padding: 24, marginBottom: 20, alignItems: "center" }}>
               <div style={{ textAlign: "center" }}>
                 <svg width={110} height={110} viewBox="0 0 130 130">
@@ -686,7 +672,6 @@ export default function SkincareAnalyzer() {
               </div>
             </div>
 
-            {/* Concerns */}
             {analysis.concerns?.length > 0 && (
               <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(201,169,110,0.15)", borderRadius: 16, padding: "20px 24px", marginBottom: 20 }}>
                 <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, letterSpacing: "0.25em", color: "#c9a96e", marginBottom: 12 }}>SKIN CONCERNS DETECTED</div>
@@ -694,7 +679,6 @@ export default function SkincareAnalyzer() {
               </div>
             )}
 
-            {/* Routines */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 20 }}>
               {[{ title: "Morning Routine", emoji: "☀️", steps: analysis.morningRoutine }, { title: "Evening Routine", emoji: "🌙", steps: analysis.eveningRoutine }].map(({ title, emoji, steps }, ri) => (
                 <div key={title} style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(201,169,110,0.15)", borderRadius: 16, padding: "22px" }}>
@@ -719,7 +703,6 @@ export default function SkincareAnalyzer() {
               ))}
             </div>
 
-            {/* Ingredients */}
             <div style={{ position: "relative", marginBottom: 20 }}>
               <div className={!isPro ? "locked-blur" : ""} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
                 <div style={{ background: "rgba(78,205,196,0.04)", border: "1px solid rgba(78,205,196,0.2)", borderRadius: 16, padding: "20px 24px" }}>
@@ -739,7 +722,6 @@ export default function SkincareAnalyzer() {
               )}
             </div>
 
-            {/* Pro Tip */}
             {analysis.tip && (
               <div style={{ position: "relative", marginBottom: 24 }}>
                 <div className={!isPro ? "locked-blur" : ""} style={{ background: "linear-gradient(135deg, rgba(201,169,110,0.08), rgba(201,169,110,0.03))", border: "1px solid rgba(201,169,110,0.25)", borderRadius: 16, padding: "24px 28px" }}>
@@ -755,7 +737,6 @@ export default function SkincareAnalyzer() {
               </div>
             )}
 
-            {/* Bottom share + upsell */}
             {!isPro && (
               <div style={{ background: "linear-gradient(135deg, rgba(201,169,110,0.1), rgba(160,120,62,0.05))", border: "1px solid rgba(201,169,110,0.3)", borderRadius: 16, padding: "24px 28px", textAlign: "center", marginBottom: 24 }}>
                 <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 300, marginBottom: 6, color: "#c9a96e" }}>Unlock your full skin potential</div>
@@ -765,7 +746,6 @@ export default function SkincareAnalyzer() {
               </div>
             )}
 
-            {/* Bottom actions */}
             <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
               <button className="share-btn" onClick={handleShare} style={{ color: "#fff", padding: "13px 28px", borderRadius: 6, fontSize: 11, fontFamily: "'DM Mono', monospace" }}>
                 📲 SHARE TO INSTAGRAM

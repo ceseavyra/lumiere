@@ -525,6 +525,7 @@ export default function SkincareAnalyzer() {
       });
       const data = await response.json();
       const text = data.content?.map(b => b.text || "").join("") || "";
+      console.log("API response:", text);
       const parsed = JSON.parse(text.replace(/```json|```/g, "").trim());
       setAnalysis(parsed);
       setScansUsed(n => n + 1);

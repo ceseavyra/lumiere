@@ -497,7 +497,7 @@ export default function SkincareAnalyzer() {
     if (!isPro && scansUsed >= FREE_SCAN_LIMIT) { setShowPaywall(true); return; }
     setLoading(true); setError(null);
     try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
+      const response = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         "x-api-key": import.meta.env.VITE_ANTHROPIC_API_KEY,
